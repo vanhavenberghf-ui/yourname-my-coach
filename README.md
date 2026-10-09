@@ -64,6 +64,28 @@ Things to know:
 - Intensity: `light` (250 parts, 1 fuzz round), `normal` (750, 3), `brutal` (2500, 8).
 - You can add your own checks to `StressTest.luau`. Anything added with `issue("high" | "medium" | "low", title, detail)` shows up in the report.
 
+## Free 24/7 hosting on Oracle Cloud
+
+1. Sign up at https://www.oracle.com/cloud/free/ (pick a home region near you; the card is only used for verification).
+2. **Create a VM instance**: Compute → Instances → Create. For the image, pick **Ubuntu 24.04**. For the shape, pick **Ampere VM.Standard.A1.Flex** (1 OCPU and 6 GB are plenty; if Ampere is "out of capacity", use **VM.Standard.E2.1.Micro**). Click **Save private key** before you create it.
+3. Once it's running, copy its **Public IP**, open a terminal on your PC and connect:
+   ```bash
+   ssh -i path/to/the-key.key ubuntu@YOUR_PUBLIC_IP
+   ```
+   (Windows 10/11 has `ssh` built in. Use PowerShell.)
+4. Paste this one command. It asks for your keys and does everything else:
+   ```bash
+   curl -fsSL https://raw.githubusercontent.com/vanhavenberghf-ui/yourname-my-coach/main/deploy/oracle-setup.sh | bash
+   ```
+
+The bot now runs 24/7, restarts if it crashes, and installs new code from GitHub every 10 minutes. You don't need to open any ports, because the bot connects out to Discord.
+
+- Logs: `journalctl -u discord-bot -f`
+- Change keys: `nano ~/discord-bot/.env` then `sudo systemctl restart discord-bot`
+- Stop: `sudo systemctl stop discord-bot`
+
+Turn off `start.bat` on your PC once Oracle is running, or you'll have two copies of the bot answering.
+
 ## Project layout
 
 ```
